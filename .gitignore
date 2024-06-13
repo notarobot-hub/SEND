@@ -1,3 +1,4 @@
 **env**
 data
 MIND/auto-labeled/output/**
+*.pyc
