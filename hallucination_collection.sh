@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo "Hello World"
 model_names=()
 model_sizes=()
 model_checkpoints=()
@@ -16,8 +15,9 @@ do
         do
             # Figure out how to access the individual model checkpoints
             eval_model=""
+            
+            # This will save two np arrays corresponding to the responses of the model
             python evaluate.py --task qa --model eval_model
         done
     done
 done
-
