@@ -14,7 +14,4 @@ module load python/3.10
 source $HOME/hallucinations_venv/bin/activate
 source .env
 
-# Set revision number based on Slurm array task ID
-REVISION=$((SLURM_ARRAY_TASK_ID))
-
-srun python ./MIND/generate_data.py --step_num $REVISION 
+srun python embedding_difference.py

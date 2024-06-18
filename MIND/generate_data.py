@@ -179,17 +179,19 @@ for data_type in ["train", "valid", "test"]:
         for e, idx in entities:
             if idx == 0 or e in d["title"]:
                 continue
+
+            truncated_text = text[:idx].strip()
             
             if "chat" not in model_family:
                 if model_family == "vicuna":
                     p_ = vicuna_prompt(d["title"])
-                    input_id = tokenizer(p_ + text[:idx].strip(), return_tensors='pt')['input_ids'].tolist()
+                    input_id = tokenizer(p_ + truncated_text, return_tensors='pt')['input_ids'].tolist()
                 else:
-                    input_id = tokenizer(text[:idx].strip(), return_tensors='pt')['input_ids'].tolist()
+                    input_id = tokenizer(truncated_text, return_tensors='pt')['input_ids'].tolist()
                     p_ = ""
                 tokens = find_first_and_next_token(text, e, idx, input_id, p_)
             else:
-                input_id = chat_change_with_answer(prompt_chat, text[:idx].strip(), tokenizer)
+                input_id = chat_change_with_answer(prompt_chat, truncated_text, tokenizer)
                 tokens = find_first_and_next_token_for_chat(text, e, idx, input_id)
             
             if not tokens:
@@ -234,6 +236,7 @@ for data_type in ["train", "valid", "test"]:
         ret["texts"] = mytexts
         ret["new_entities"] = new_entities
         ret["original_entities"] = original_entity
+        ret["truncated_text"] = truncated_text
         result.append(ret)
     
 
