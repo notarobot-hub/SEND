@@ -1,0 +1,106 @@
+[=== Module python/3.10 loaded ===]
+There was a problem when trying to write in your cache folder (/network/scratch/j/juan.guerra/.cache/huggingface/hub). You should set the environment variable TRANSFORMERS_CACHE to a writable directory.
+/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/mila/j/juan.guerra/pythia-hallucination/./MIND/generate_data.py", line 36, in <module>
+    model, tokenizer, generation_config, at_id = get_model(model_type, model_family, model_checkpoint=model_checkpoint)
+  File "/home/mila/j/juan.guerra/pythia-hallucination/MIND/utils/model.py", line 61, in get_model
+    tokenizer = AutoTokenizer.from_pretrained(model_path, padding_side="left")
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/transformers/models/auto/tokenization_auto.py", line 652, in from_pretrained
+    tokenizer_config = get_tokenizer_config(pretrained_model_name_or_path, **kwargs)
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/transformers/models/auto/tokenization_auto.py", line 496, in get_tokenizer_config
+    resolved_config_file = cached_file(
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/transformers/utils/hub.py", line 417, in cached_file
+    resolved_file = hf_hub_download(
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/file_download.py", line 1184, in hf_hub_download
+    headers = build_hf_headers(
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/utils/_headers.py", line 124, in build_hf_headers
+    token_to_send = get_token_to_send(token)
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/utils/_headers.py", line 153, in get_token_to_send
+    cached_token = get_token()
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/utils/_token.py", line 45, in get_token
+    return _get_token_from_google_colab() or _get_token_from_environment() or _get_token_from_file()
+  File "/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/utils/_token.py", line 118, in _get_token_from_file
+    return _clean_token(Path(constants.HF_TOKEN_PATH).read_text())
+  File "/cvmfs/ai.mila.quebec/apps/arch/distro/python/3.10/lib/python3.10/pathlib.py", line 1134, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/cvmfs/ai.mila.quebec/apps/arch/distro/python/3.10/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+OSError: [Errno 70] Communication error on send: '/network/scratch/j/juan.guerra/.cache/huggingface/token'
+
+======== GPU REPORT ========
+
+==============NVSMI LOG==============
+
+Timestamp                                 : Thu Jun 20 13:39:53 2024
+Driver Version                            : 535.161.08
+CUDA Version                              : 12.2
+
+Attached GPUs                             : 1
+GPU 00000000:81:00.0
+    Accounting Mode                       : Enabled
+    Accounting Mode Buffer Size           : 4000
+    Accounted Processes                   : None
+
+Thu Jun 20 13:39:53 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.161.08             Driver Version: 535.161.08   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100-SXM4-40GB          On  | 00000000:81:00.0 Off |                    0 |
+| N/A   25C    P0              49W / 400W |      0MiB / 40960MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+srun: error: cn-k002: task 0: Exited with exit code 1
+srun: Terminating StepId=4910274.0
+
+======== GPU REPORT ========
+
+==============NVSMI LOG==============
+
+Timestamp                                 : Thu Jun 20 13:39:53 2024
+Driver Version                            : 535.161.08
+CUDA Version                              : 12.2
+
+Attached GPUs                             : 1
+GPU 00000000:81:00.0
+    Accounting Mode                       : Enabled
+    Accounting Mode Buffer Size           : 4000
+    Accounted Processes                   : None
+
+Thu Jun 20 13:39:53 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.161.08             Driver Version: 535.161.08   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100-SXM4-40GB          On  | 00000000:81:00.0 Off |                    0 |
+| N/A   25C    P0              49W / 400W |      0MiB / 40960MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+

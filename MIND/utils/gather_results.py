@@ -5,9 +5,10 @@ import os
 
 INPUT_DIR = "./MIND/auto-labeled/output/"
 DICTIONARY_PATH = "./MIND/auto-labeled/wiki/wiki_titles.csv"
-dictionary = pd.read_csv(DICTIONARY_PATH)    # True means hallucinates on that data point, and False means it does not
+DICTIONARY = pd.read_csv(DICTIONARY_PATH)    # True means hallucinates on that data point, and False means it does not
 
 def gather_train_test_valid(model_family, model_name, model_checkpoint) -> None:
+    global DICTIONARY
     path = INPUT_DIR + model_family + "_" + model_name + "_" + model_checkpoint + "/"
     train = []
     valid = []
@@ -27,18 +28,24 @@ def gather_train_test_valid(model_family, model_name, model_checkpoint) -> None:
     # in the data list only take jsons with "texts" key list, length greater than zero
     data = [d for d in data if "texts" in d and len(d["texts"]) > 0]
 
-    dictionary[model_family + "_" + model_name + "_" + model_checkpoint] = dictionary["title"].apply(lambda x: x in [d["title"] for d in data]).astype(int)
+    DICTIONARY[model_family + "_" + model_name + "_" + model_checkpoint] = DICTIONARY["title"].apply(lambda x: x in [d["title"] for d in data]).astype(int)
 
-    subset = dictionary[[model_family + "_" + model_name + "_" + model_checkpoint, "title"]]
+    subset = DICTIONARY[[model_family + "_" + model_name + "_" + model_checkpoint, "title"]]
     subset.to_csv(path + "tabular_results.csv")
 
 def gather_all(model_family, model_name, *args) -> None:
+    global DICTIONARY
     # iterate over args which is a list of all checkpoints and gather results
     for model_checkpoint in args:
         gather_train_test_valid(model_family, model_name, model_checkpoint+"000")
 
     # add a last column which is the sum of all the columns from column 1 to the last column
-    dictionary["sum"] = dictionary.iloc[:, 1:].sum(axis=1)
+    DICTIONARY["sum"] = DICTIONARY.iloc[:, 1:].sum(axis=1)
+
+    # only keep rows where sum is not 0 or len(args)
+    # DICTIONARY = DICTIONARY[(DICTIONARY["sum"] != 0) & (DICTIONARY["sum"] != len(args))]
+    # only keep rows where the first feature is 1 second 0 and third 1
+    DICTIONARY = DICTIONARY[(DICTIONARY.iloc[:, 1] == 1) & (DICTIONARY.iloc[:, 2] == 0) & (DICTIONARY.iloc[:, 3] == 1)]
     
 
 def main():
@@ -54,7 +61,7 @@ def main():
     model_checkpoints = args.model_checkpoints
     gather_all(model_family, model_name, *model_checkpoints)
     os.makedirs("./data", exist_ok=True)
-    dictionary.to_csv("./data/diff_results.csv")
+    DICTIONARY.to_csv("./data/diff_results.csv")
 
 if __name__ == "__main__":
     main()
