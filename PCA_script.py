@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 import json
 import plotly.graph_objects as go
+import plotly.io as pio
 import gzip
 #!source .env
 
@@ -24,7 +25,7 @@ for col in df.columns[2:]:
 values = df[['pythia_1b_107000', 'pythia_1b_125000', 'pythia_1b_143000']]
 # Flatten each vector and concatenate them into a single numpy array
 all_vectors = np.concatenate([v.flatten() for col in values.columns for v in values[col]])
-
+print(all_vectors.shape)
 # Reshape the array to have a shape of (52*3, 2048)
 all_vectors = all_vectors.reshape(-1, 2048)
 def pca_graph(all_vectors):
@@ -91,7 +92,7 @@ def compress_and_get_size(data):
     compressed_data = gzip.compress(byte_data)
     # Return the size of the compressed data
     return len(compressed_data)
-
+"""
 # Iterate over the hidden embedding vectors
 for i in range(allv2.shape[0]):
     for j in range(allv2.shape[1]):
@@ -101,7 +102,7 @@ for i in range(allv2.shape[0]):
         size_vector = compress_and_get_size(vector)
         # Print the size
         print(f"Compressed size of vector at checkpoint {i}, data point {j}: {size_vector} bytes")
-
+"""
 # Create a 2D scatter plot
 fig = go.Figure()
 
@@ -109,10 +110,10 @@ fig = go.Figure()
 colors = ['red', 'green', 'blue']
 
 # Add a line for each data point
-for i in range(all_vectors.shape[1]):
+for i in range(allv2.shape[1]):
     fig.add_trace(go.Scatter(
-        x=[1,2,3],
-        y=all_vectors[:, i, :],
+        x=list(range(3)),
+        y=np.mean(allv2[:, i, :], axis=1),
         mode='lines+markers',
         marker=dict(
             color=colors,                # set color to an array/list of desired values
@@ -135,3 +136,4 @@ fig.update_layout(
 
 # Show the plot
 fig.show()
+pio.write_image(fig, "compression_analysis.png")
