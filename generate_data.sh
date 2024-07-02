@@ -8,7 +8,7 @@
 #SBATCH --mail-user=juan.guerra@mila.quebec
 #SBATCH --output=logs/halu/%A_%a.out
 #SBATCH --mail-type=ALL
-#SBATCH --array=125    # Define job array for revisions
+#SBATCH --array=21,82    # Define job array for revisions
 
 module load python/3.10
 source $HOME/hallucinations_venv/bin/activate

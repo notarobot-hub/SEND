@@ -1,0 +1,45 @@
+[=== Module python/3.10 loaded ===]
+/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Processing titles:   0%|          | 0/75 [00:00<?, ?it/s]Processing titles:   1%|▏         | 1/75 [00:01<02:14,  1.82s/it]Processing titles:   4%|▍         | 3/75 [00:01<00:38,  1.89it/s]Processing titles:   7%|▋         | 5/75 [00:02<00:20,  3.40it/s]Processing titles:   9%|▉         | 7/75 [00:02<00:13,  4.94it/s]Processing titles:  12%|█▏        | 9/75 [00:02<00:10,  6.43it/s]Processing titles:  15%|█▍        | 11/75 [00:02<00:08,  7.92it/s]Processing titles:  17%|█▋        | 13/75 [00:02<00:06,  9.10it/s]Processing titles:  20%|██        | 15/75 [00:02<00:05, 10.06it/s]Processing titles:  23%|██▎       | 17/75 [00:03<00:05, 11.13it/s]Processing titles:  25%|██▌       | 19/75 [00:03<00:04, 11.96it/s]Processing titles:  28%|██▊       | 21/75 [00:03<00:04, 12.60it/s]Processing titles:  31%|███       | 23/75 [00:03<00:04, 12.40it/s]Processing titles:  33%|███▎      | 25/75 [00:03<00:03, 12.58it/s]Processing titles:  36%|███▌      | 27/75 [00:03<00:03, 12.75it/s]Processing titles:  39%|███▊      | 29/75 [00:03<00:03, 13.21it/s]Processing titles:  41%|████▏     | 31/75 [00:04<00:03, 12.67it/s]Processing titles:  44%|████▍     | 33/75 [00:04<00:03, 13.45it/s]Processing titles:  47%|████▋     | 35/75 [00:04<00:02, 13.68it/s]Processing titles:  49%|████▉     | 37/75 [00:04<00:02, 13.87it/s]Processing titles:  52%|█████▏    | 39/75 [00:04<00:02, 13.63it/s]Processing titles:  55%|█████▍    | 41/75 [00:04<00:02, 13.90it/s]Processing titles:  57%|█████▋    | 43/75 [00:04<00:02, 14.09it/s]Processing titles:  60%|██████    | 45/75 [00:05<00:02, 14.05it/s]Processing titles:  63%|██████▎   | 47/75 [00:05<00:01, 14.52it/s]Processing titles:  65%|██████▌   | 49/75 [00:05<00:01, 14.08it/s]Processing titles:  68%|██████▊   | 51/75 [00:05<00:01, 14.05it/s]Processing titles:  71%|███████   | 53/75 [00:05<00:01, 13.74it/s]Processing titles:  73%|███████▎  | 55/75 [00:05<00:01, 14.24it/s]Processing titles:  76%|███████▌  | 57/75 [00:05<00:01, 13.83it/s]Processing titles:  79%|███████▊  | 59/75 [00:06<00:01, 13.98it/s]Processing titles:  81%|████████▏ | 61/75 [00:06<00:00, 14.48it/s]Processing titles:  84%|████████▍ | 63/75 [00:06<00:00, 14.45it/s]Processing titles:  87%|████████▋ | 65/75 [00:06<00:00, 13.98it/s]Processing titles:  89%|████████▉ | 67/75 [00:06<00:00, 14.11it/s]Processing titles:  92%|█████████▏| 69/75 [00:06<00:00, 13.79it/s]Processing titles:  95%|█████████▍| 71/75 [00:06<00:00, 13.50it/s]Processing titles:  97%|█████████▋| 73/75 [00:07<00:00, 13.40it/s]Processing titles: 100%|██████████| 75/75 [00:07<00:00, 13.30it/s]Processing titles: 100%|██████████| 75/75 [00:07<00:00, 10.37it/s]
+
+======== GPU REPORT ========
+
+==============NVSMI LOG==============
+
+Timestamp                                 : Thu Jun 27 10:45:37 2024
+Driver Version                            : 535.161.08
+CUDA Version                              : 12.2
+
+Attached GPUs                             : 1
+GPU 00000000:81:00.0
+    Accounting Mode                       : Enabled
+    Accounting Mode Buffer Size           : 4000
+    Accounted Processes
+        Process ID                        : 3301954
+            GPU Utilization               : 14 %
+            Memory Utilization            : 2 %
+            Max memory usage              : 12572 MiB
+            Time                          : 26545 ms
+            Is Running                    : 0
+
+Thu Jun 27 10:45:37 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.161.08             Driver Version: 535.161.08   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100-SXM4-40GB          On  | 00000000:81:00.0 Off |                    0 |
+| N/A   36C    P0              97W / 400W |      0MiB / 40960MiB |     17%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
