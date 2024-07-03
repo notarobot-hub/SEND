@@ -1,0 +1,72 @@
+[=== Module python/3.10 loaded ===]
+/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Processing titles:   0%|          | 0/65 [00:00<?, ?it/s]Processing titles:   2%|▏         | 1/65 [00:01<02:02,  1.91s/it]Processing titles:   5%|▍         | 3/65 [00:02<00:34,  1.79it/s]Processing titles:   8%|▊         | 5/65 [00:02<00:18,  3.20it/s]Processing titles:  11%|█         | 7/65 [00:02<00:12,  4.65it/s]Processing titles:  14%|█▍        | 9/65 [00:02<00:09,  5.99it/s]Processing titles:  17%|█▋        | 11/65 [00:02<00:07,  7.31it/s]Processing titles:  20%|██        | 13/65 [00:02<00:06,  8.37it/s]Processing titles:  23%|██▎       | 15/65 [00:03<00:05,  9.40it/s]Processing titles:  26%|██▌       | 17/65 [00:03<00:04, 10.04it/s]Processing titles:  29%|██▉       | 19/65 [00:03<00:04, 10.97it/s]Processing titles:  32%|███▏      | 21/65 [00:03<00:03, 11.46it/s]Processing titles:  35%|███▌      | 23/65 [00:03<00:04, 10.11it/s]Processing titles:  38%|███▊      | 25/65 [00:03<00:03, 10.76it/s]Processing titles:  42%|████▏     | 27/65 [00:04<00:03, 11.28it/s]Processing titles:  45%|████▍     | 29/65 [00:04<00:03, 11.38it/s]Processing titles:  48%|████▊     | 31/65 [00:04<00:02, 11.36it/s]Processing titles:  51%|█████     | 33/65 [00:04<00:02, 11.78it/s]Processing titles:  54%|█████▍    | 35/65 [00:04<00:02, 12.09it/s]Processing titles:  57%|█████▋    | 37/65 [00:04<00:02, 12.21it/s]Processing titles:  60%|██████    | 39/65 [00:05<00:02, 12.04it/s]Processing titles:  63%|██████▎   | 41/65 [00:05<00:02, 11.94it/s]Processing titles:  66%|██████▌   | 43/65 [00:05<00:01, 11.82it/s]Processing titles:  69%|██████▉   | 45/65 [00:05<00:01, 11.74it/s]Processing titles:  72%|███████▏  | 47/65 [00:05<00:01, 11.67it/s]Processing titles:  75%|███████▌  | 49/65 [00:05<00:01, 11.65it/s]Processing titles:  78%|███████▊  | 51/65 [00:06<00:01, 12.13it/s]Processing titles:  82%|████████▏ | 53/65 [00:06<00:00, 12.26it/s]Processing titles:  85%|████████▍ | 55/65 [00:06<00:00, 12.34it/s]Processing titles:  88%|████████▊ | 57/65 [00:06<00:00, 12.16it/s]Processing titles:  91%|█████████ | 59/65 [00:06<00:00, 11.99it/s]Processing titles:  94%|█████████▍| 61/65 [00:06<00:00, 12.18it/s]Processing titles:  97%|█████████▋| 63/65 [00:07<00:00, 11.63it/s]Processing titles: 100%|██████████| 65/65 [00:07<00:00, 11.67it/s]Processing titles: 100%|██████████| 65/65 [00:07<00:00,  8.91it/s]
+/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Processing titles:   0%|          | 0/65 [00:00<?, ?it/s]Processing titles:   2%|▏         | 1/65 [00:00<00:32,  1.95it/s]Processing titles:   5%|▍         | 3/65 [00:00<00:11,  5.22it/s]Processing titles:   8%|▊         | 5/65 [00:00<00:08,  7.19it/s]Processing titles:  11%|█         | 7/65 [00:01<00:06,  8.63it/s]Processing titles:  14%|█▍        | 9/65 [00:01<00:05, 10.02it/s]Processing titles:  17%|█▋        | 11/65 [00:01<00:05, 10.69it/s]Processing titles:  20%|██        | 13/65 [00:01<00:04, 11.34it/s]Processing titles:  23%|██▎       | 15/65 [00:01<00:04, 11.32it/s]Processing titles:  26%|██▌       | 17/65 [00:01<00:04, 11.45it/s]Processing titles:  29%|██▉       | 19/65 [00:01<00:03, 12.10it/s]Processing titles:  32%|███▏      | 21/65 [00:02<00:04,  9.31it/s]Processing titles:  35%|███▌      | 23/65 [00:02<00:04,  9.90it/s]Processing titles:  38%|███▊      | 25/65 [00:02<00:03, 10.41it/s]Processing titles:  42%|████▏     | 27/65 [00:02<00:03, 11.24it/s]Processing titles:  45%|████▍     | 29/65 [00:02<00:03, 11.41it/s]Processing titles:  48%|████▊     | 31/65 [00:03<00:03, 11.15it/s]Processing titles:  51%|█████     | 33/65 [00:03<00:02, 11.32it/s]Processing titles:  54%|█████▍    | 35/65 [00:03<00:02, 11.16it/s]Processing titles:  57%|█████▋    | 37/65 [00:03<00:02, 12.07it/s]Processing titles:  60%|██████    | 39/65 [00:03<00:02, 11.95it/s]Processing titles:  63%|██████▎   | 41/65 [00:03<00:01, 12.28it/s]Processing titles:  66%|██████▌   | 43/65 [00:04<00:01, 12.72it/s]Processing titles:  69%|██████▉   | 45/65 [00:04<00:01, 13.02it/s]Processing titles:  72%|███████▏  | 47/65 [00:04<00:01, 12.52it/s]Processing titles:  75%|███████▌  | 49/65 [00:04<00:01, 12.01it/s]Processing titles:  78%|███████▊  | 51/65 [00:04<00:01, 11.87it/s]Processing titles:  82%|████████▏ | 53/65 [00:04<00:00, 12.31it/s]Processing titles:  85%|████████▍ | 55/65 [00:05<00:00, 12.42it/s]Processing titles:  88%|████████▊ | 57/65 [00:05<00:00, 12.50it/s]Processing titles:  91%|█████████ | 59/65 [00:05<00:00, 12.26it/s]Processing titles:  94%|█████████▍| 61/65 [00:05<00:00, 12.68it/s]Processing titles:  97%|█████████▋| 63/65 [00:05<00:00, 12.00it/s]Processing titles: 100%|██████████| 65/65 [00:05<00:00, 11.87it/s]Processing titles: 100%|██████████| 65/65 [00:05<00:00, 10.98it/s]
+/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Processing titles:   0%|          | 0/52 [00:00<?, ?it/s]Processing titles:   2%|▏         | 1/52 [00:00<00:20,  2.54it/s]Processing titles:   4%|▍         | 2/52 [00:00<00:11,  4.36it/s]Processing titles:   8%|▊         | 4/52 [00:00<00:08,  5.47it/s]Processing titles:  12%|█▏        | 6/52 [00:00<00:06,  7.61it/s]Processing titles:  15%|█▌        | 8/52 [00:01<00:05,  8.60it/s]Processing titles:  19%|█▉        | 10/52 [00:01<00:04,  9.75it/s]Processing titles:  23%|██▎       | 12/52 [00:01<00:03, 10.31it/s]Processing titles:  27%|██▋       | 14/52 [00:01<00:03, 11.03it/s]Processing titles:  31%|███       | 16/52 [00:01<00:03, 11.77it/s]Processing titles:  35%|███▍      | 18/52 [00:01<00:02, 11.96it/s]Processing titles:  38%|███▊      | 20/52 [00:02<00:02, 11.86it/s]Processing titles:  42%|████▏     | 22/52 [00:02<00:02, 11.79it/s]Processing titles:  46%|████▌     | 24/52 [00:02<00:02, 11.72it/s]Processing titles:  50%|█████     | 26/52 [00:02<00:02, 10.48it/s]Processing titles:  54%|█████▍    | 28/52 [00:02<00:02, 11.09it/s]Processing titles:  58%|█████▊    | 30/52 [00:02<00:01, 12.03it/s]Processing titles:  62%|██████▏   | 32/52 [00:03<00:01, 12.50it/s]Processing titles:  65%|██████▌   | 34/52 [00:03<00:01, 12.42it/s]Processing titles:  69%|██████▉   | 36/52 [00:03<00:01, 12.14it/s]Processing titles:  73%|███████▎  | 38/52 [00:03<00:01, 11.95it/s]Processing titles:  77%|███████▋  | 40/52 [00:03<00:00, 12.44it/s]Processing titles:  81%|████████  | 42/52 [00:03<00:00, 12.12it/s]Processing titles:  85%|████████▍ | 44/52 [00:04<00:00, 12.25it/s]Processing titles:  88%|████████▊ | 46/52 [00:04<00:00, 12.11it/s]Processing titles:  92%|█████████▏| 48/52 [00:04<00:00, 12.24it/s]Processing titles:  96%|█████████▌| 50/52 [00:04<00:00, 11.76it/s]Processing titles: 100%|██████████| 52/52 [00:04<00:00, 12.30it/s]Processing titles: 100%|██████████| 52/52 [00:04<00:00, 10.87it/s]
+/home/mila/j/juan.guerra/hallucinations_venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Processing titles:   0%|          | 0/43 [00:00<?, ?it/s]Processing titles:   2%|▏         | 1/43 [00:00<00:25,  1.65it/s]Processing titles:   7%|▋         | 3/43 [00:00<00:08,  4.54it/s]Processing titles:   9%|▉         | 4/43 [00:00<00:07,  4.88it/s]Processing titles:  14%|█▍        | 6/43 [00:01<00:05,  6.85it/s]Processing titles:  19%|█▊        | 8/43 [00:01<00:04,  8.46it/s]Processing titles:  23%|██▎       | 10/43 [00:01<00:03,  9.68it/s]Processing titles:  28%|██▊       | 12/43 [00:01<00:02, 10.57it/s]Processing titles:  33%|███▎      | 14/43 [00:01<00:02, 10.88it/s]Processing titles:  37%|███▋      | 16/43 [00:01<00:02, 11.07it/s]Processing titles:  42%|████▏     | 18/43 [00:02<00:02, 11.77it/s]Processing titles:  47%|████▋     | 20/43 [00:02<00:01, 11.98it/s]Processing titles:  51%|█████     | 22/43 [00:02<00:01, 12.23it/s]Processing titles:  56%|█████▌    | 24/43 [00:02<00:01, 12.01it/s]Processing titles:  60%|██████    | 26/43 [00:02<00:01, 12.16it/s]Processing titles:  65%|██████▌   | 28/43 [00:02<00:01, 12.31it/s]Processing titles:  70%|██████▉   | 30/43 [00:03<00:01, 12.32it/s]Processing titles:  74%|███████▍  | 32/43 [00:03<00:00, 11.74it/s]Processing titles:  79%|███████▉  | 34/43 [00:03<00:00, 12.01it/s]Processing titles:  84%|████████▎ | 36/43 [00:03<00:00, 12.20it/s]Processing titles:  88%|████████▊ | 38/43 [00:03<00:00, 11.98it/s]Processing titles:  93%|█████████▎| 40/43 [00:03<00:00, 12.44it/s]Processing titles:  98%|█████████▊| 42/43 [00:04<00:00, 11.54it/s]Processing titles: 100%|██████████| 43/43 [00:04<00:00, 10.29it/s]
+
+======== GPU REPORT ========
+
+==============NVSMI LOG==============
+
+Timestamp                                 : Wed Jul  3 10:43:14 2024
+Driver Version                            : 535.161.08
+CUDA Version                              : 12.2
+
+Attached GPUs                             : 1
+GPU 00000000:4E:00.0
+    Accounting Mode                       : Enabled
+    Accounting Mode Buffer Size           : 4000
+    Accounted Processes
+        Process ID                        : 351675
+            GPU Utilization               : 13 %
+            Memory Utilization            : 2 %
+            Max memory usage              : 12594 MiB
+            Time                          : 28383 ms
+            Is Running                    : 0
+        Process ID                        : 352605
+            GPU Utilization               : 13 %
+            Memory Utilization            : 2 %
+            Max memory usage              : 12598 MiB
+            Time                          : 26339 ms
+            Is Running                    : 0
+        Process ID                        : 353450
+            GPU Utilization               : 12 %
+            Memory Utilization            : 2 %
+            Max memory usage              : 12576 MiB
+            Time                          : 24532 ms
+            Is Running                    : 0
+        Process ID                        : 354231
+            GPU Utilization               : 11 %
+            Memory Utilization            : 2 %
+            Max memory usage              : 12570 MiB
+            Time                          : 23606 ms
+            Is Running                    : 0
+
+Wed Jul  3 10:43:14 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.161.08             Driver Version: 535.161.08   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100-SXM4-40GB          On  | 00000000:4E:00.0 Off |                    0 |
+| N/A   29C    P0              87W / 400W |      0MiB / 40960MiB |     62%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+

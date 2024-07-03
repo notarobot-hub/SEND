@@ -50,20 +50,52 @@ def extract_significance(sub):
     for i in range(z_normalized.shape[1]):
         counter = 0
         avg = 0
+        avg_reg = 0
         for j in range(len(z_normalized)):
             avg += z_normalized[j][i]
+            avg_reg += sub[j][i]
             if z_normalized[j][i] >= 3 or z_normalized[j][i] <= -3: # Making sure it is significant
                 counter += 1
         
         if counter > len(z_normalized)*0.9: # checking if it's large change in more than 95% of the data
             avg = avg/len(z_normalized)
-            print(f'Location: {i} \tAverage Embed ZScore: {round(avg, 3)}\tCounter: {counter}')
+            avg_reg = avg_reg/len(z_normalized)
+            print(f'Location: {i} \tAverage Embed ZScore: {round(avg, 3)}\tCounter: {counter}\tActivation: {round(avg_reg, 3)}')
             
 
+def compare_check1_check2(sub1, sub2):
+    diff = np.subtract(sub1, sub2) # Will give us the activations that are highly different
+
+    for i in range(diff.shape[0]):
+        plt.plot(diff[i,:])
+    
+    plt.title("Change from Checkpoints 21, 82, 143 - 101")
+    plt.xlabel("Embedding")
+    plt.ylabel("Delta Activation")
+    plt.show()
+    plt.savefig("check_diff_21_82_143_order101")
+
+    print(f'\nZ difference between the subtracted differences between checkpoint')
+    z_normalized = stats.zscore(diff, axis=1)
+    print(f'Num of inputs: {len(z_normalized)}')
+    for i in range(z_normalized.shape[1]):
+        counter = 0
+        avg = 0
+        for j in range(len(z_normalized)):
+            avg += z_normalized[j][i]
+            if z_normalized[j][i] >= 2 or z_normalized[j][i] <= -2: # Making sure it is significant
+                counter += 1
+
+        avg = avg/len(z_normalized)
+        if avg > 2 or avg < -2: # checking if it's large change in more than 95% of the data
+            print(f'Location: {i} \tAverage Difference ZScore: {round(avg, 3)}\tCounter: {counter}')
+
+    
+    
 print("\nChange 0-1 embedding significance")
 extract_significance(sub1)
 
 print("\nChange 1-2 embedding significance")
 extract_significance(sub2)
 
-plot_diff2(sub2)
+compare_check1_check2(sub1, sub2)

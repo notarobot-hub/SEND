@@ -6,6 +6,16 @@ from generate_hd import *
 from tqdm import tqdm
 import pandas as pd
 
+argument_parser = argparse.ArgumentParser()
+argument_parser.add_argument("--model_family", type=str, default="pythia")
+argument_parser.add_argument("--model_name", type=str, default="1b")
+# model checkpoints to be a list of strings separated by space
+argument_parser.add_argument("--model_checkpoints", type=str, nargs="+")
+args = argument_parser.parse_args()
+model_family = args.model_family
+model_name = args.model_name
+model_checkpoints = args.model_checkpoints
+
 # load the diff results
 diff_results = pd.read_csv("./data/diff_results.csv", index_col=0)
 
@@ -45,7 +55,7 @@ for index, title in tqdm(enumerate(titles), total=len(titles), desc="Processing 
             one_instance[model_name] = hidden
     results.append(one_instance)
 
-with open("./data/hidden_layer_activations.json", "w") as f:
+with open(f"./data/hidden_layer_activations_model_{model_family}{model_name}_{model_checkpoints}(101).json", "w") as f:
 
     json.dump(results, f)
 
