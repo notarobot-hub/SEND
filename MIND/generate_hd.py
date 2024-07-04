@@ -48,6 +48,35 @@ def get_middle_layer_hd(model, text, tokenizer, model_family, title=None):
     # print(f"Final representation: {final_representation}")
 
     return final_representation.tolist()
+
+def get_penultimate_layer_hd(model, text, tokenizer, model_family, title=None):
+    # print(f"Text: {text}")
+    # Tokenize the input text
+    ids = get_tokenized_ids(text, tokenizer, title)
+    # print(f"ids: {len(ids[0])}")
+    # print(f"ids shape: {len(ids)}")
+    hd = model(torch.tensor(ids).to(model.device), output_hidden_states=True).hidden_states
+
+    # Get the residual dimension from the model configuration
+    residual_dim = model.config.hidden_size
+
+    # Select the middle layer
+    middle_layer_index = len(hd) -2
+    hds = hd[middle_layer_index].clone().detach()  # Shape: [batch_size, seq_length, hidden_size]
+
+    # Calculate the sum of all token's activation vectors in the middle layer
+    sum_hds = torch.sum(hds, dim=1)  # Shape: [batch_size, hidden_size]
+
+    # Get the last token's activation vector
+    h_n = hds[:, -1, :]  # Shape: [batch_size, hidden_size]
+
+    # Calculate the final representation as per the formula
+    final_representation = 0.5 * ((1 / hds.shape[1]) * sum_hds + h_n)  # Shape: [batch_size, hidden_size]
+
+    # print(f"Final representation shape: {final_representation.shape}")
+    # print(f"Final representation: {final_representation}")
+
+    return final_representation.tolist()
             
 if __name__ == "__main__":
 

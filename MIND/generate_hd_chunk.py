@@ -48,14 +48,16 @@ for index, title in tqdm(enumerate(titles), total=len(titles), desc="Processing 
         model, tokenizer = models_dict[model_name]  # Retrieve model and tokenizer from dictionary
         data = data_dict.get(title)
         if data:
-            hidden = get_middle_layer_hd(model, data["truncated_text"], tokenizer, model_family, data["title"])
+            hidden = get_penultimate_layer_hd(model, data["truncated_text"], tokenizer, model_family, data["title"])
             if model_index == 0:
                 one_instance["title"] = title
                 one_instance["text"] = data["truncated_text"]
             one_instance[model_name] = hidden
     results.append(one_instance)
 
-with open(f"./data/hidden_layer_activations_model_{model_family}{model_name}_{model_checkpoints}(101).json", "w") as f:
+name = model_name.split("_")
+
+with open(f"./data/pen_hidden_layer_activations_model_{name[0]}_{name[1]}_{model_checkpoints[0]}_{model_checkpoints[1]}_{model_checkpoints[2]}(101).json", "w") as f:
 
     json.dump(results, f)
 

@@ -2,3 +2,5 @@
 data
 MIND/auto-labeled**
 *.pyc
+logs/halu
+slurm*
