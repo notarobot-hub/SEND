@@ -22,7 +22,7 @@ scale = 2048 / avg_norm
 for col in df.columns[2:]:
     df[col] = df[col].apply(lambda x: scale * np.array(x))
 
-values = df[['pythia_1b_21000', 'pythia_1b_82000', 'pythia_1b_143000']]
+values = df[['pythia_1b_21000', 'pythia_1b_82000', 'pythia_1b_124000', 'pythia_1b_143000']]
 
 # Flatten each vector and concatenate them into a single numpy array
 all_vectors = np.concatenate([v.flatten() for col in values.columns for v in values[col]])
@@ -31,7 +31,7 @@ all_vectors = all_vectors.reshape(-1, 2048)
 allv2 = all_vectors.reshape(3, int(size/(2048*3)), 2048)
 
 sub1 = np.subtract(allv2[0], allv2[1])
-sub2 = np.subtract(allv2[1], allv2[2])
+sub2 = np.subtract(allv2[2], allv2[3])
 
 def plot_diff2(sub):
 

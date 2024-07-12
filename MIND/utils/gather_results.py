@@ -45,7 +45,7 @@ def gather_all(model_family, model_name, *args) -> None:
     # only keep rows where sum is not 0 or len(args)
     # DICTIONARY = DICTIONARY[(DICTIONARY["sum"] != 0) & (DICTIONARY["sum"] != len(args))]
     # only keep rows where the first feature is 1 second 0 and third 1
-    DICTIONARY = DICTIONARY[(DICTIONARY.iloc[:, 1] == 1) & (DICTIONARY.iloc[:, 2] == 0) & (DICTIONARY.iloc[:, 3] == 1)]
+    DICTIONARY = DICTIONARY[(DICTIONARY.iloc[:, -1] == 1)]
     
 
 def main():

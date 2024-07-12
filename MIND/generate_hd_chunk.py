@@ -57,7 +57,7 @@ for index, title in tqdm(enumerate(titles), total=len(titles), desc="Processing 
 
 name = model_name.split("_")
 
-with open(f"./data/pen_hidden_layer_activations_model_{name[0]}_{name[1]}_{model_checkpoints[0]}_{model_checkpoints[1]}_{model_checkpoints[2]}(101).json", "w") as f:
+with open(f"./data/hidden_layer_activations_model_30_to_43.json", "w") as f:
 
     json.dump(results, f)
 
