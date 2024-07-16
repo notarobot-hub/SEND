@@ -31,8 +31,8 @@ def get_middle_layer_hd(model, text, tokenizer, model_family, title=None):
     # Get the residual dimension from the model configuration
     residual_dim = model.config.hidden_size
 
-    # Select the middle layer
-    middle_layer_index = len(hd) // 2
+    # select the penultimate layer of ther LLM
+    middle_layer_index = len(hd) - 2
     hds = hd[middle_layer_index].clone().detach()  # Shape: [batch_size, seq_length, hidden_size]
 
     # Calculate the sum of all token's activation vectors in the middle layer

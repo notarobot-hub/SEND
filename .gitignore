@@ -2,3 +2,6 @@
 data
 MIND/auto-labeled**
 *.pyc
+**wandb**
+**sparse_coding-main
+secrets.json
