@@ -71,7 +71,8 @@ def analyze_feature_effects_parallel(embeddings_np, max_gpu_processes=60):
     effects = [effect for sublist in results for effect in sublist]
     effects.sort(key=lambda x: x[0])  # Sort by feature index
     del embeddings_gpu, covariance_matrix, original_score
-    return [effect[1] for effect in effects]
+    effects_dict = {effect[0]: abs(effect[1]) for effect in effects}  # Use absolute value of change
+    return effects_dict
 
 def argsort_effect(effects):
     cp_effects = cp.array(effects)
@@ -81,7 +82,7 @@ def argsort_effect(effects):
     del cp_effects, cp_abs_effects, sorted_indices
     return np_sorted_indices
 
-def explain_features_multiprocess(embeddings: np.ndarray) -> np.ndarray:
+def explain_features_multiprocess(embeddings: np.ndarray) -> dict:
     """
     Analyzes the effect of perturbing each feature in the embeddings on the eigenscore of the covariance matrix.
 
@@ -93,14 +94,14 @@ def explain_features_multiprocess(embeddings: np.ndarray) -> np.ndarray:
                                 This array contains the embeddings that will be analyzed.
 
     Returns:
-    - np.ndarray: Incrementally sorted array of feature indices based on the effect of perturbing each feature on the eigenscore.
+    - dict: A dictionary containing the effectiveness of each neuron given its index in the sentence embedding.
 
     Note:
     - The multiprocessing start method is set to 'spawn' to ensure compatibility with CUDA operations in child processes.
     """
     set_start_method('spawn', force=True)
-    effects = analyze_feature_effects_parallel(embeddings)
-    return argsort_effect(effects)
+    effects_dict = analyze_feature_effects_parallel(embeddings)
+    return effects_dict
 
 def main(embeddings=None):
     # Example usage

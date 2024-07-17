@@ -31,7 +31,7 @@ def penultimate_layer_output(accelerator, model, tokenizer, input_text, middle=T
     return penultimate_layer_output
 
 def extract_embeddings(accelerator, model_name, input_text):
-    CHECKPOINTS = range(142000, 144000, 1000)
+    CHECKPOINTS = range(133000, 144000, 1000)
     penultimate_outputs = []
     for checkpoint in CHECKPOINTS:
         model, tokenizer = load_model(model_name, checkpoint)
@@ -40,7 +40,6 @@ def extract_embeddings(accelerator, model_name, input_text):
 
     # make sure the outputs are of numpy arrays of shape (num_checkpoints, sequence_length, hidden_size)
     embeddings = np.concatenate([output.cpu() for output in penultimate_outputs], axis=0)
-    print(embeddings)
     return embeddings
 
 """
@@ -84,6 +83,20 @@ def top_10_sensitive(net_change: np.ndarray):
     # get the top 10 most sensitive neurons given an array of size (nd, )
     return np.argsort(net_change)[::-1][:10]
 
+def top_k_percent_sensitive(net_change: np.ndarray, k: float):
+    # Calculate the number of top elements to include
+    num_elements = int(k * len(net_change))
+    
+    # Get indices of the sorted array in descending order
+    sorted_indices = np.argsort(net_change)[::-1]
+    
+    # Select the top k% indices
+    top_indices = sorted_indices[:num_elements]
+    
+    # Create a dictionary of indices and their corresponding net change values
+    top_changes = {index: net_change[index] for index in top_indices}
+    
+    return top_changes
 
 if __name__ == '__main__':
     model_name = "EleutherAI/pythia-70m"
@@ -92,5 +105,4 @@ if __name__ == '__main__':
     SLT_emb = get_SLT_embedding(full_emb)
     net = combined_sensitivity(SLT_emb)
     top_10 = top_10_sensitive(net)
-    print(top_10)
 
