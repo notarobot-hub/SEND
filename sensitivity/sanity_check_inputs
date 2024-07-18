@@ -1,0 +1,29 @@
+import pandas as pd
+import numpy as np
+import json
+
+def change_per_input(embeddings):
+    return np.sum(np.abs(np.diff(embeddings, axis=0)), axis = 0)
+
+
+f = open(f'/home/mila/j/juan.guerra/pythia-hallucination/data/hidden_layer_activations_model_30_to_43.json')
+
+data = json.load(f)
+
+df = pd.DataFrame(data)
+
+checkpoints = df.columns[2:]
+values = df[checkpoints]
+
+for input in range(len(values)):
+
+    point = values.loc[input]
+
+    embeddings = np.zeros((len(checkpoints), 2048))
+
+    for i in range(len(point)):
+        embeddings[i] = point[i][0]
+    
+    deltas = change_per_input(embeddings)
+    
+    print(f'Argmax: {np.argmax(deltas)}\t Max: {np.max(deltas)}')

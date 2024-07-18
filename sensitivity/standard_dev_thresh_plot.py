@@ -60,7 +60,7 @@ for threshold in [2, 3]:
         plt.ylabel(f"Percentage of datapoints > {threshold} STD away from Mean")
         plt.legend()
         plt.tight_layout()
-        plt.savefig(f"pen_embed_change_significance_of_{threshold}_first_diff_{order}")
+        plt.savefig(f"figures/pen_embed_change_significance_of_{threshold}_first_diff_{order}")
         plt.close()
 
     for order in order_list:
@@ -107,6 +107,6 @@ for threshold in [2, 3]:
         plt.ylabel(f"Percentage of datapoints > {threshold} STD away from Mean")
         plt.legend()
         plt.tight_layout()
-        plt.savefig(f"pen_embed_change_significance_of_{threshold}_second_diff_{order}")
+        plt.savefig(f"figures/pen_embed_change_significance_of_{threshold}_second_diff_{order}")
 
         plt.close()

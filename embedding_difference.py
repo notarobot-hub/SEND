@@ -42,7 +42,7 @@ def plot_diff2(sub):
     plt.xlabel("Embedding")
     plt.ylabel("Delta Activation")
     plt.show()
-    plt.savefig("embedding_difference_82_143_101")
+    plt.savefig("figures/embedding_difference_82_143_101")
     
 
 def extract_significance(sub):
@@ -73,7 +73,7 @@ def compare_check1_check2(sub1, sub2):
     plt.xlabel("Embedding")
     plt.ylabel("Delta Activation")
     plt.show()
-    plt.savefig("check_diff_21_82_143_order101")
+    plt.savefig("figures/check_diff_21_82_143_order101")
 
     print(f'\nZ difference between the subtracted differences between checkpoint')
     z_normalized = stats.zscore(diff, axis=1)

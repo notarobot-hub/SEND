@@ -56,9 +56,9 @@ for order in order_list:
     plt.ylabel("Average Activation")
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"pen_gen_embed_change_plot_first_diff_{order}")
+    plt.savefig(f"figures/pen_gen_embed_change_plot_first_diff_{order}")
     plt.ylim(-40, 40)
-    plt.savefig(f"zoomed_pen_gen_embed_change_plot_first_diff_{order}")
+    plt.savefig(f"figures/zoomed_pen_gen_embed_change_plot_first_diff_{order}")
     plt.close()
 
 for order in order_list:
@@ -102,10 +102,10 @@ for order in order_list:
     plt.ylabel("Average Activation")
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"pen_gen_embed_change_plot_second_diff_{order}")
+    plt.savefig(f"figures/pen_gen_embed_change_plot_second_diff_{order}")
 
     plt.ylim(-15, 15)
-    plt.savefig(f"zoomed_pen_gen_embed_change_plot_second_diff_{order}")
+    plt.savefig(f"figures/zoomed_pen_gen_embed_change_plot_second_diff_{order}")
     plt.close()
 
 # The difference in the change between the two subtracted things
@@ -153,9 +153,9 @@ for order in order_list:
     plt.ylabel("Sum of Delta check 1-2 and check 2-3")
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"pen_gen_embed_sum_in_change_plot_{order}")
+    plt.savefig(f"figures/pen_gen_embed_sum_in_change_plot_{order}")
 
     plt.ylim(-40, 40)
 
-    plt.savefig(f"zoomed_pen_gen_embed_sum_in_change_plot_{order}")
+    plt.savefig(f"figures/zoomed_pen_gen_embed_sum_in_change_plot_{order}")
     plt.close()
