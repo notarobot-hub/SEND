@@ -12,29 +12,39 @@ GPU requirements for the script: CUDA-enabled GPU with CuPy installed 80GB of me
 CPU cores: The more the better. Start with around 32 cores and increase if needed.
 """
 
-def compute_eigenscore(covariance_matrix, alpha=0.001):
-    K = covariance_matrix.shape[0]
-    regularized_covariance_matrix = covariance_matrix + alpha * cp.eye(K) 
-    eigenvalues = cp.linalg.eigvalsh(regularized_covariance_matrix)
-    eigenscore = (1 / K) * cp.sum(cp.log(eigenvalues))
-    del regularized_covariance_matrix, eigenvalues
-    return eigenscore
+def compute_eigenscore(embedding_matrix, alpha=0.001):
+    # mean center the data
+    embedding_matrix = embedding_matrix - cp.mean(embedding_matrix, axis=0)
+    n = embedding_matrix.shape[0]
+    _, S, _ = cp.linalg.svd(embedding_matrix, full_matrices=False)  # main source of complexity
+    lambda_reg = (S**2 / (n - 1)) + alpha
+    eigenscore = cp.sum(cp.log(lambda_reg))
+    return eigenscore / n
 
-def perturb_and_evaluate(embeddings, feature_index):
+def perturb_and_evaluate(embeddings, feature_index, num_perturbations=20):
     original_value = embeddings[:, feature_index].copy()
-    perturbation = cp.random.normal(0, 1, size=embeddings.shape[0])
+    total_change = 0.0
+    original_score = compute_eigenscore(embeddings)
+    
+    for _ in range(num_perturbations):
 
-    embeddings[:, feature_index] += perturbation
-    perturbed_score = compute_eigenscore(cp.cov(embeddings, rowvar=False))
+        # just set the column to zero and see the effect
+        perturbation = cp.zeros(embeddings.shape[0])
+        
+        embeddings[:, feature_index] = perturbation
+        perturbed_score = compute_eigenscore(embeddings)
+        
+        # Calculate change in eigenscore
+        change_in_score = original_score - perturbed_score
+        total_change += change_in_score
+        
+        embeddings[:, feature_index] = original_value
+        break
 
-    embeddings[:, feature_index] = original_value
-
-    del perturbation
-
-    return perturbed_score
+    return total_change
 
 def process_task(args):
-    embeddings, feature_indices, original_score, covariance_matrix = args
+    embeddings, feature_indices, original_score = args
     effects = []
     # Convert range to list for tqdm description (efficient alternative)
     first_index = min(feature_indices)
@@ -47,8 +57,7 @@ def process_task(args):
 
 def analyze_feature_effects_parallel(embeddings_np, max_gpu_processes=60):
     embeddings_gpu = cp.asarray(embeddings_np)
-    covariance_matrix = cp.cov(embeddings_gpu, rowvar=False)
-    original_score = compute_eigenscore(covariance_matrix)
+    original_score = compute_eigenscore(embeddings_gpu)
 
     # Limit the number of processes to the lesser of CPU cores or a predefined maximum
     # num_processes = min(cpu_count(), embeddings_np.shape[1], max_gpu_processes)
@@ -66,11 +75,11 @@ def analyze_feature_effects_parallel(embeddings_np, max_gpu_processes=60):
         start = end
 
     with Pool(processes=num_processes) as pool:
-        results = pool.map(process_task, [(embeddings_gpu.copy(), indices, original_score, covariance_matrix) for indices in feature_indices if indices])
+        results = pool.map(process_task, [(embeddings_gpu.copy(), indices, original_score) for indices in feature_indices if indices])
 
     effects = [effect for sublist in results for effect in sublist]
     effects.sort(key=lambda x: x[0])  # Sort by feature index
-    del embeddings_gpu, covariance_matrix, original_score
+    del embeddings_gpu, original_score
     effects_dict = {effect[0]: abs(effect[1]) for effect in effects}  # Use absolute value of change
     return effects_dict
 

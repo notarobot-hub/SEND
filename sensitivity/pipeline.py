@@ -26,35 +26,38 @@ if __name__ == '__main__':
     top_k_percent = top_k_percent_sensitive(net, 1)  # get the top 5% most sensitive neurons as a dictionary
     
     print(f"Most effective neurons on eigenscore: {most_effective_indices_on_eigenscore}")
-    print(f"Top 5% most sensitive neurons: {top_k_percent}")
+    print(f"Most sensitive neurons: {top_k_percent}")
 
-    # Find global min and max across both dictionaries
-    all_values = list(most_effective_indices_on_eigenscore.values()) + list(top_k_percent.values())
-    global_min = float(min(all_values))
-    global_max = float(max(all_values))
+    # Define the softmax function
+    def softmax(values):
+        e_values = np.exp(values - np.max(values))  # Subtract max for numerical stability
+        return e_values / e_values.sum()
 
-    # Function to normalize values
-    def normalize(value, min_val, max_val):
-        return 1 + ((value - min_val) * (10)) / (max_val - min_val)
+    # Function to apply softmax and prepare dictionary for serialization
+    def apply_softmax_and_serialize(input_dict, output_file):
+        values = []
+        
+        for value in input_dict.values():
+            # Convert CuPy array to NumPy array if necessary
+            if isinstance(value, cp.ndarray):
+                values.append(value.get())  # Use .get() to convert to NumPy
+            else:
+                values.append(float(value))  # Ensure it's a float
+        
+        values = np.array(values, dtype=float)
+        softmax_values = softmax(values)
+        
+        serialized_dict = {
+            str(key): float(value)
+            for key, value in zip(input_dict.keys(), softmax_values)
+        }
+        
+        with open(output_file, 'w') as f:
+            json.dump(serialized_dict, f)
 
-    # Normalize and prepare the first dictionary
-    most_effective_indices_on_eigenscore_serializable = {
-        key: normalize(float(value.item()), global_min, global_max)
-        for key, value in most_effective_indices_on_eigenscore.items()
-    }
+    # Apply softmax and serialize each dictionary
+    apply_softmax_and_serialize(most_effective_indices_on_eigenscore, 'most_effective_indices_on_eigenscore_softmax.json')
+    apply_softmax_and_serialize(top_k_percent, 'most_sensitive_indices_in_training_softmax.json')
 
-    # Save the first dictionary
-    with open('most_effective_indices_on_eigenscore.json', 'w') as f:
-        json.dump(most_effective_indices_on_eigenscore_serializable, f)
-
-    # Normalize and prepare the second dictionary
-    top_k_percent_serializable = {
-        str(int(key)): normalize(float(value), global_min, global_max) if isinstance(value, (np.float32, np.float64)) else normalize(value, global_min, global_max)
-        for key, value in top_k_percent.items()
-    }
-
-    # Save the second dictionary
-    with open('most_sensitive_indices_in_training.json', 'w') as f:
-        json.dump(top_k_percent_serializable, f)
 
     print("Done!")
