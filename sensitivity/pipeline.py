@@ -18,46 +18,48 @@ if __name__ == '__main__':
     # Run 10 inferences on the fully trained model
     embeddings = run_with_temperature(accelerator, model_name, INPUT)
     # start a new process for explain_features_multiprocess function with input embeddings
-    most_effective_indices_on_eigenscore = explain_features_multiprocess(embeddings)    # get the neuron effectiveness scores dict
+    # most_effective_indices_on_eigenscore = explain_features_multiprocess(embeddings)    # get the neuron effectiveness scores dict
 
     full_emb = extract_embeddings(accelerator, model_name, INPUT)
     SLT_emb = get_SLT_embedding(full_emb)
     net = combined_sensitivity(SLT_emb)
     top_k_percent = top_k_percent_sensitive(net, 1)  # get the top 5% most sensitive neurons as a dictionary
+
+    most_effective_indices_on_eigenscore = explain_sensitive_vs_random(embeddings, top_k_percent)
     
     print(f"Most effective neurons on eigenscore: {most_effective_indices_on_eigenscore}")
     print(f"Most sensitive neurons: {top_k_percent}")
 
     # Define the softmax function
-    def softmax(values):
-        e_values = np.exp(values - np.max(values))  # Subtract max for numerical stability
-        return e_values / e_values.sum()
+    # def softmax(values):
+    #     e_values = np.exp(values - np.max(values))  # Subtract max for numerical stability
+    #     return e_values / e_values.sum()
 
-    # Function to apply softmax and prepare dictionary for serialization
-    def apply_softmax_and_serialize(input_dict, output_file):
-        values = []
+    # # Function to apply softmax and prepare dictionary for serialization
+    # def apply_softmax_and_serialize(input_dict, output_file):
+    #     values = []
         
-        for value in input_dict.values():
-            # Convert CuPy array to NumPy array if necessary
-            if isinstance(value, cp.ndarray):
-                values.append(value.get())  # Use .get() to convert to NumPy
-            else:
-                values.append(float(value))  # Ensure it's a float
+    #     for value in input_dict.values():
+    #         # Convert CuPy array to NumPy array if necessary
+    #         if isinstance(value, cp.ndarray):
+    #             values.append(value.get())  # Use .get() to convert to NumPy
+    #         else:
+    #             values.append(float(value))  # Ensure it's a float
         
-        values = np.array(values, dtype=float)
-        softmax_values = softmax(values)
+    #     values = np.array(values, dtype=float)
+    #     softmax_values = softmax(values)
         
-        serialized_dict = {
-            str(key): float(value)
-            for key, value in zip(input_dict.keys(), softmax_values)
-        }
+    #     serialized_dict = {
+    #         str(key): float(value)
+    #         for key, value in zip(input_dict.keys(), softmax_values)
+    #     }
         
-        with open(output_file, 'w') as f:
-            json.dump(serialized_dict, f)
+    #     with open(output_file, 'w') as f:
+    #         json.dump(serialized_dict, f)
 
-    # Apply softmax and serialize each dictionary
-    apply_softmax_and_serialize(most_effective_indices_on_eigenscore, 'most_effective_indices_on_eigenscore_softmax.json')
-    apply_softmax_and_serialize(top_k_percent, 'most_sensitive_indices_in_training_softmax.json')
+    # # Apply softmax and serialize each dictionary
+    # apply_softmax_and_serialize(most_effective_indices_on_eigenscore, 'most_effective_indices_on_eigenscore_softmax.json')
+    # apply_softmax_and_serialize(top_k_percent, 'most_sensitive_indices_in_training_softmax.json')
 
 
     print("Done!")

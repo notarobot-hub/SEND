@@ -49,7 +49,6 @@ def run_with_temperature_concat(accelerator, model_name, input_text, temperature
         with torch.no_grad():
             outputs = model(tokens, attention_mask=attention_mask, output_hidden_states=True)
             if middle:
-                # TODO: check if .hidden_states exactly outputs the hidden layers after each transformer layer norm
                 penultimate_embeddings = outputs.hidden_states[len(outputs.hidden_states) // 2]
             else:
                 penultimate_embeddings = outputs.hidden_states[-2]
@@ -107,7 +106,6 @@ def run_with_temperature(accelerator, model_name, input_text, temperature=0.5, c
         with torch.no_grad():
             outputs = model(tokens, attention_mask=attention_mask, output_hidden_states=True)
             if middle:
-                # TODO: check if .hidden_states exactly outputs the hidden layers after each transformer layer norm
                 penultimate_embeddings = outputs.hidden_states[len(outputs.hidden_states) // 2]
             else:
                 penultimate_embeddings = outputs.hidden_states[-2]
