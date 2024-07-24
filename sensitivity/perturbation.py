@@ -55,6 +55,7 @@ def drop_sensitive_neurons(embeddings, sensitive_dict, top_k_num=10):
     Returns:
     - float: The change in eigenscore after dropping the top k sensitive neurons
     """
+    # print(embeddings)
     modified_embeddings = embeddings.copy()
     top_k_indices = cp.array(sorted(sensitive_dict, key=sensitive_dict.get, reverse=True)[:top_k_num])
     for index in top_k_indices:

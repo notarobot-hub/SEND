@@ -99,9 +99,11 @@ def top_k_percent_sensitive(net_change: np.ndarray, k: float):
     return top_changes
 
 if __name__ == '__main__':
-    model_name = "EleutherAI/pythia-70m"
+    model_name = "EleutherAI/pythia-1b"
     accelerator = Accelerator()
-    full_emb = extract_embeddings(accelerator, model_name, "what do you think about einstein?")
+
+    # Getting the embedding for an actually halllucinating data point"
+    full_emb = extract_embeddings(accelerator, model_name, "Adelaide Anne Procter ( 30 October 1825 \u2013 2 February 1864 ) was an")
     SLT_emb = get_SLT_embedding(full_emb)
     net = combined_sensitivity(SLT_emb)
     top_10 = top_10_sensitive(net)
