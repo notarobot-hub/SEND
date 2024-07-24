@@ -15,6 +15,9 @@ if __name__ == "__main__":
 
     sub_diff = []
     mult_diff = []
+    sense_overall = []
+    random_overall = []
+
     model_size = 'pythia-1b'
     model_name = "EleutherAI/" + model_size
     top_k_percent = efficient_extract_sensitive(model_size)
@@ -61,13 +64,20 @@ if __name__ == "__main__":
             set_start_method('spawn', force=True)
 
             # Drop the top k sensitive neurons and compare to random neuron drop
-            sensitive_diff, random_diff = analyze_sensitive_drop_parallel(embeddings, top_k_percent, top_k_num)
+            sensitive_diff, random_diff = analyze_sensitive_drop_parallel(embeddings, top_k_percent, top_k_num) # Need to make this more efficient, incredibly time consuming
             print(f'Text: {text}')
             print(f"Sensitive drop effect: {sensitive_diff}")
             print(f"Random drop effect: {random_diff}\n") 
 
+            sensitive_diff = sensitive_diff.get()
+            random_diff = random_diff.get()
+
+            sense_overall.append(sensitive_diff)
+            random_overall.append(random_diff)
+
             sub_diff.append(sensitive_diff - random_diff)
             mult_diff.append(sensitive_diff/random_diff)
+
 
     mean_sub_diff = np.mean(sub_diff)
     mean_mult_diff = np.mean(mult_diff)
@@ -75,3 +85,6 @@ if __name__ == "__main__":
     print("\n=========================================================================================")
     print(f'Mean Sub Diff: {mean_sub_diff}')
     print(f'Mean Mult Diff: {mean_mult_diff}')
+
+    np.save(f'sensitive_neuron_drop_eigenscore_values_halu', sense_overall)
+    np.save(f'random_neuron_drop_eigenscore_values_halu', random_overall)
