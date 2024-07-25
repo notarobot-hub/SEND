@@ -4,6 +4,9 @@ import numpy as np
 from tqdm import tqdm
 from multiprocessing import Pool, set_start_method
 import warnings
+import GPUtil
+
+from sensitivity.most_sensitive import top_k_percent_sensitive
 
 warnings.filterwarnings("ignore", message="resource_tracker: There appear to be")
 
@@ -103,35 +106,35 @@ def drop_comparison_task(args):
     random_diff = drop_compare_to_average(embeddings, list(sensitive_dict.keys()), num_perturbations=20)
     return sensitive_diff, random_diff
 
-def analyze_sensitive_drop_parallel(embeddings, sensitive_dict, top_k_num=10, max_gpu_processes=60):
-
-    
+def analyze_sensitive_drop_parallel(embeddings, sensitive_dict, top_k_num=10, max_gpu_processes=30):
     # Preparing data for parallel processing
     embeddings_gpu = cp.array(embeddings)
+
+    # get the change in eigenscore after dropping the top k sensitive neurons
     sensitive_drop_effect = drop_sensitive_neurons(embeddings_gpu, sensitive_dict, top_k_num)
-    num_processes = min(max_gpu_processes, embeddings.shape[1])
-    total_features = embeddings.shape[1]
-    features_per_process = total_features // num_processes
-    extra_features = total_features % num_processes
+    
+    total_processes = 100
+    num_iterations = (total_processes + max_gpu_processes - 1) // max_gpu_processes  # Ceiling division
+    results = []
+    top_k_indices = sorted(sensitive_dict, key=sensitive_dict.get, reverse=True)[:top_k_num]
 
-    feature_indices = []
-    start = 0
-    for i in range(num_processes):
-        end = start + features_per_process + (1 if i < extra_features else 0)
-        if start < end:  # Ensure the range is not empty
-            feature_indices.append((embeddings_gpu.copy(), list(range(start, end)), top_k_num))
-        start = end
+    for iteration in range(num_iterations):
+        current_process_count = min(max_gpu_processes, total_processes - iteration * max_gpu_processes)
+        
+        feature_indices = []
+        for i in range(current_process_count):
+            feature_indices.append((embeddings_gpu, top_k_indices))
 
-    # Step 2: In parallel, call drop_compare_to_average for each set of feature indices
-    with Pool(processes=num_processes) as pool:
-        results = pool.starmap(drop_compare_to_average, feature_indices)
+        # Parallel processing for the current batch
+        with Pool(processes=current_process_count) as pool:
+            batch_results = pool.starmap(drop_compare_to_average, feature_indices)
+            results.extend(batch_results)  # Aggregate results from this batch
 
     average_of_averages = cp.mean(cp.array(results))
     
     # Cleanup
     del embeddings_gpu
     
-    # Return the effect of dropping sensitive neurons and the average of average effects
     return sensitive_drop_effect, average_of_averages
 
 def process_task(args):
