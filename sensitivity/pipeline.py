@@ -5,6 +5,7 @@ from run_with_temperature import *
 from perturbation import *
 import json
 
+
 if __name__ == '__main__':
     warnings.filterwarnings("ignore", message="resource_tracker: There appear to be")
     GUIDANCE = "You are my completion assistant. Continue the following prompt and complete it based on facts:  "
@@ -14,7 +15,7 @@ if __name__ == '__main__':
 
     # Load the model and tokenizer
     accelerator = Accelerator()
-    model_name = "EleutherAI/pythia-70m"
+    model_name = "EleutherAI/pythia-410m"
     # Run 10 inferences on the fully trained model
     embeddings = run_with_temperature(accelerator, model_name, INPUT)
     # start a new process for explain_features_multiprocess function with input embeddings
