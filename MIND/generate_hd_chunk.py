@@ -37,6 +37,7 @@ for index, title in tqdm(enumerate(titles), total=len(titles), desc="Processing 
     for model_index, model_name in enumerate(models):
         model, tokenizer = models_dict[model_name]  # Retrieve model and tokenizer from dictionary
         data = data_dict.get(title)
+        print(data)
         if data:
             hidden = get_middle_layer_hd(model, data["truncated_text"], tokenizer, model_family, data["title"])
             if model_index == 0:
@@ -45,7 +46,7 @@ for index, title in tqdm(enumerate(titles), total=len(titles), desc="Processing 
             one_instance[model_name] = hidden
     results.append(one_instance)
 
-with open("./data/hidden_layer_activations.json", "w") as f:
+with open("./data/hidden_layer_activations_43_non_hallu.json", "w") as f:
     json.dump(results, f)
 
 

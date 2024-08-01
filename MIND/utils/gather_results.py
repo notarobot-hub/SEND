@@ -89,6 +89,19 @@ def gather_all_000(model_family, model_name, *args) -> None:
     # only keep rows where the first feature is 0 second 0 and third 1
     DICTIONARY = DICTIONARY[(DICTIONARY.iloc[:, 1] == 0) & (DICTIONARY.iloc[:, 2] == 0) & (DICTIONARY.iloc[:, 3] == 0)]
 
+def gather_all_0(model_family, model_name, *args) -> None:
+    global DICTIONARY
+    # iterate over args which is a list of all checkpoints and gather results
+    for model_checkpoint in args:
+        gather_train_test_valid(model_family, model_name, model_checkpoint+"000")
+
+    # add a last column which is the sum of all the columns from column 1 to the last column
+    DICTIONARY["sum"] = DICTIONARY.iloc[:, 1:].sum(axis=1)
+    print(len(DICTIONARY))
+    # only keep rows where sum is not 0 or len(args)
+    # DICTIONARY = DICTIONARY[(DICTIONARY["sum"] != 0) & (DICTIONARY["sum"] != len(args))]
+    # only keep rows where the first feature is 0 second 0 and third 1
+    DICTIONARY = DICTIONARY[(DICTIONARY.iloc[:, 1] == 0)]
     
 
 def main():
@@ -98,7 +111,7 @@ def main():
     argument_parser.add_argument("--model_name", type=str, default="1b")
     # model checkpoints to be a list of strings separated by space
     argument_parser.add_argument("--model_checkpoints", type=str, nargs="+")
-    argument_parser.add_argument("--hallu_type", type=str, default="101")
+    argument_parser.add_argument("--hallu_type", type=str, default="0")
     args = argument_parser.parse_args()
     model_family = args.model_family
     model_name = args.model_name
@@ -112,6 +125,8 @@ def main():
         gather_all_001(model_family, model_name, *model_checkpoints)
     elif hallu_type == "000":
         gather_all_000(model_family, model_name, *model_checkpoints)
+    elif hallu_type == "000":
+        gather_all_0(model_family, model_name, *model_checkpoints)
     os.makedirs("./data", exist_ok=True)
     DICTIONARY.to_csv("./data/diff_results.csv")
 
