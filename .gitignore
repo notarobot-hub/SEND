@@ -5,3 +5,6 @@ MIND/auto-labeled**
 **wandb**
 **sparse_coding-main
 secrets.json
+**.out
+.cache
+.vscode

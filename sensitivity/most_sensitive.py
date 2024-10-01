@@ -9,10 +9,10 @@ warnings.filterwarnings("ignore", message="TypedStorage is deprecated")
 
 def load_model(model_name, revision: int | None=None):
     if revision is not None:
-        model = GPTNeoXForCausalLM.from_pretrained(model_name, revision=f"step{revision}", device_map='auto')
+        model = GPTNeoXForCausalLM.from_pretrained(model_name, device_map='auto', force_download=True, revision=f"step{revision}", output_hidden_states=True)
         tokenizer = AutoTokenizer.from_pretrained(model_name, revision=f"step{revision}")
     else:
-        model = GPTNeoXForCausalLM.from_pretrained(model_name, device_map='auto')
+        model = GPTNeoXForCausalLM.from_pretrained(model_name, device_map='auto', force_download=True, output_hidden_states=True)
         tokenizer = AutoTokenizer.from_pretrained(model_name)
     return model, tokenizer
 

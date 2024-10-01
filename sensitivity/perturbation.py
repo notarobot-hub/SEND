@@ -56,7 +56,7 @@ def drop_sensitive_neurons(embeddings, sensitive_dict, top_k_num=10):
     - top_k_num (int, optional): Number of top sensitive neurons to drop. Defaults to 10.
 
     Returns:
-    - float: The change in eigenscore after dropping the top k sensitive neurons
+    - tuple: The original eigenscore and the specific change in eigenscore after dropping the top k sensitive neurons.
     """
     modified_embeddings = embeddings.copy()
     top_k_indices = cp.array(sorted(sensitive_dict, key=sensitive_dict.get, reverse=True)[:top_k_num])
@@ -67,7 +67,7 @@ def drop_sensitive_neurons(embeddings, sensitive_dict, top_k_num=10):
     modified_score = compute_eigenscore(modified_embeddings)
     modified_specific = modified_score - original_score
 
-    return modified_specific
+    return original_score, modified_specific
 
 def drop_compare_to_average(embeddings, neuron_indices, num_perturbations=20):
     """
@@ -98,19 +98,13 @@ def drop_compare_to_average(embeddings, neuron_indices, num_perturbations=20):
     modified_average = cp.mean(modified_scores)
     return modified_average
 
-def drop_comparison_task(args):
-    embeddings, sensitive_dict, top_k_num = args
-    # given the dictionary of sensitive neurons mapping index to value, get the top k sensitive neurons
-    sensitive_diff = drop_sensitive_neurons(embeddings, sensitive_dict, top_k_num)
-    random_diff = drop_compare_to_average(embeddings, list(sensitive_dict.keys()), num_perturbations=20)
-    return sensitive_diff, random_diff
-
 def analyze_sensitive_drop_parallel(embeddings, sensitive_dict, top_k_num=10, max_gpu_processes=30):
     # Preparing data for parallel processing
     embeddings_gpu = cp.array(embeddings)
 
     # get the change in eigenscore after dropping the top k sensitive neurons
-    sensitive_drop_effect = drop_sensitive_neurons(embeddings_gpu, sensitive_dict, top_k_num)
+    orig, sensitive_drop_effect = drop_sensitive_neurons(embeddings_gpu, sensitive_dict, top_k_num)
+
     
     total_processes = 100
     num_iterations = (total_processes + max_gpu_processes - 1) // max_gpu_processes  # Ceiling division
@@ -134,7 +128,7 @@ def analyze_sensitive_drop_parallel(embeddings, sensitive_dict, top_k_num=10, ma
     # Cleanup
     del embeddings_gpu
     
-    return sensitive_drop_effect, average_of_averages
+    return orig, sensitive_drop_effect, average_of_averages
 
 def process_task(args):
     embeddings, feature_indices, original_score = args
@@ -207,8 +201,8 @@ def explain_features_multiprocess(embeddings: np.ndarray) -> dict:
 
 def explain_sensitive_vs_random(embeddings: np.ndarray, sensitive_dict: dict, top_k_num: int = 10) -> tuple:
     set_start_method('spawn', force=True)
-    sensitive_diff, random_diff = analyze_sensitive_drop_parallel(embeddings, sensitive_dict, top_k_num)
-    return sensitive_diff, random_diff
+    orig, sensitive_diff, random_diff = analyze_sensitive_drop_parallel(embeddings, sensitive_dict, top_k_num)
+    return orig, sensitive_diff, random_diff
 
 def main(embeddings=None):
     set_start_method('spawn', force=True)
@@ -222,7 +216,7 @@ def main(embeddings=None):
     top_k_num = 10
 
     # Drop the top k sensitive neurons and compare to random neuron drop
-    sensitive_diff, random_diff = analyze_sensitive_drop_parallel(embeddings, sensitive_dict, top_k_num)
+    orig, sensitive_diff, random_diff = analyze_sensitive_drop_parallel(embeddings, sensitive_dict, top_k_num)
     print(f"Sensitive drop effect: {sensitive_diff}")
     print(f"Random drop effect: {random_diff}")
 
