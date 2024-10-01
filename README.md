@@ -20,3 +20,11 @@ To install the required packages, create a python3.10 environment (3.10.11 prefe
 
 ## Running the experiments with HPC
 - Load the python environment as mentioned above, and follow the BATCHing instructions in the `generate_data.sh` and `post_processing.sh` scripts to run the experiments on the HPC.
+
+## Running other experiments 
+- `send` directory is for the implementation of the SeND training technique for hallucination detection. For more information you can refer to the README of the directory.
+- `rag_experiments` directory is for the experiments related to integrating RAG with SeND and testing SeND with additional hallucination detection metrics.
+- `sensitivity` directory contains the source code for EES calculation and algorithm imlpementation.
+
+
+For most experiments, if done with cloud resources, 2 A100l or V100 GPUs will be optimal and not much memory is needed.
