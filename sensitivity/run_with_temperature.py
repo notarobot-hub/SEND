@@ -62,7 +62,7 @@ def run_with_temperature_concat(accelerator, model_name, input_text, temperature
     
     return embeddings
 
-def run_with_temperature(accelerator, model_name, input_text, temperature=0.5, contextual_embedding_extraction_form="last_token", middle=False):
+def run_with_temperature(accelerator, model_name, input_text, temperature=0.5, contextual_embedding_extraction_form="last_token", middle=False, REVISION=143000):
     """Generates the embedding matrix of 10 different outputs of inference with temperature.
 
     Args:
@@ -76,7 +76,6 @@ def run_with_temperature(accelerator, model_name, input_text, temperature=0.5, c
     Returns:
         _type_: _description_
     """
-    REVISION = 143000
     model = GPTNeoXForCausalLM.from_pretrained(model_name, revision=f"step{REVISION}", device_map='auto')
     tokenizer = AutoTokenizer.from_pretrained(model_name, revision=f"step{REVISION}")
     model, tokenizer = accelerator.prepare(model, tokenizer)

@@ -138,6 +138,7 @@ threadpoolctl==3.5.0
 tokenizers==0.19.1
 torch==2.0.1
 torchopt==0.7.3
+torchtune==0.2.1
 torchtyping==0.1.4
 torchvision==0.15.2
 tornado==6.4.1

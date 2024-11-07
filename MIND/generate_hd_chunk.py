@@ -46,7 +46,7 @@ for index, title in tqdm(enumerate(titles), total=len(titles), desc="Processing 
             one_instance[model_name] = hidden
     results.append(one_instance)
 
-with open("./data/hidden_layer_activations_43_non_hallu.json", "w") as f:
+with open("./data/hidden_layer_activations_30_43_non_hallu_all.json", "w") as f:
     json.dump(results, f)
 
 

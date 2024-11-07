@@ -6,7 +6,7 @@ from multiprocessing import Pool, set_start_method
 import warnings
 import GPUtil
 
-from sensitivity.most_sensitive import top_k_percent_sensitive
+from most_sensitive import top_k_percent_sensitive
 
 warnings.filterwarnings("ignore", message="resource_tracker: There appear to be")
 

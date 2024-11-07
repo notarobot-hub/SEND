@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     # Load the model and tokenizer
     accelerator = Accelerator()
-    model_name = "EleutherAI/pythia-410m"
+    model_name = "EleutherAI/pythia-1b"
     # Run 10 inferences on the fully trained model
     embeddings = run_with_temperature(accelerator, model_name, INPUT)
     # start a new process for explain_features_multiprocess function with input embeddings

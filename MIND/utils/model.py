@@ -28,6 +28,10 @@ def get_model(model_type, model_family, max_new_tokens=1, model_checkpoint=None)
     elif model_family == "pythia":
         model_path = f"EleutherAI/pythia-{model_type}"
         at_id = [1214, 33]
+    elif model_family == "pythia_finetune":
+        model_path = f"Shahradmz/normal-tuned-pythia-1b-helm"
+    elif model_path == "pythia_send":
+        model_path = f"Shahradmz/send-tuned-pythia-1b-helm"
     else:
         model_path = f"meta-llama/Llama-2-{model_type}-chat-hf"
         

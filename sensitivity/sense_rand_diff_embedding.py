@@ -72,7 +72,7 @@ if __name__ == "__main__":
                 eigen = compute_eigenscore(cp.array(embeddings))
                 
                 revision_eigenscores.append(eigen.get())
-                
+                                
                 if count >= 80:
                     break
                     
