@@ -12,3 +12,6 @@ secrets.json
 *.tsv
 **.sh
 **.ipynb**
+trlx
+lm-evaluation-harness
+bigcode-evaluation-harness
