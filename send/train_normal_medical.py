@@ -38,9 +38,9 @@ class TextDataset(Dataset):
 
 
 # load the actual data
-input_data_dir = f'desend/alpaca.csv'
+input_data_dir = f'desend/data/legalbench.csv'
 data = pd.read_csv(input_data_dir)
-all_data = data['texts'].tolist()[:3000]
+all_data = data['texts'].tolist()[:200]
 
 # randomly select 80 samples to go in the large dataset and 20 for the tracking dataset
 total_data = len(all_data)
@@ -69,7 +69,7 @@ print("starting training")
 # Number of epochs
 num_epochs = 14
 
-wandb.init(project="pythia-sensitive-neurons-no-dropout-medical", config={
+wandb.init(project="pythia-sensitive-neurons-no-dropout-coding", config={
     "model_name": MODEL_NAME,
     "epochs": num_epochs,
     "batch_size": 1,

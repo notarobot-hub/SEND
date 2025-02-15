@@ -6,7 +6,7 @@
 #SBATCH --gres=gpu:a100l:4
 #SBATCH --mem=128G
 #SBATCH --time=0-03:00:00  # 3 hours
-#SBATCH --mail-user= 
+#SBATCH --mail-user=
 #SBATCH --output=logs/halu/%A_%a_1bcontinual.out
 #SBATCH --mail-type=ALL
 

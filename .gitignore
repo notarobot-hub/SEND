@@ -8,3 +8,7 @@ secrets.json
 **.out
 .cache
 .vscode
+*.csv
+*.tsv
+**.sh
+**.ipynb**

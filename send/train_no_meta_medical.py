@@ -7,7 +7,18 @@ from tqdm import tqdm
 import pandas as pd
 import wandb
 from sensitivity.efficient_eigenscore.efficient import *
+import argparse
 
+# Initialize argument parser
+argument_parser = argparse.ArgumentParser()
+argument_parser.add_argument("--dataset_name", type=str, required=True, help="Name of the dataset to use.")
+argument_parser.add_argument("--k", type=float, required=True, help="Percentage of top sensitive neurons to return.")
+args = argument_parser.parse_args()
+
+# Set epoch threshold to fixed value
+epoch_threshold = 3
+
+# Load model and tokenizer
 MODEL_NAME = "EleutherAI/pythia-1B"
 model, tokenizer = load_model(MODEL_NAME, 143000)
 tokenizer.pad_token = tokenizer.eos_token
@@ -36,13 +47,12 @@ class TextDataset(Dataset):
         labels = input_ids.clone()
         return input_ids, attention_mask, labels
 
-
-# load the actual data
-input_data_dir = f'desend/alpaca.csv'
+# Load the actual data
+input_data_dir = f'send/data/{args.dataset_name}.csv'
 data = pd.read_csv(input_data_dir)
-all_data = data['texts'].tolist()[:3000]
+all_data = data['texts'].tolist()[:200]
 
-# randomly select 80 samples to go in the large dataset and 20 for the tracking dataset
+# Randomly select 80 samples to go in the large dataset and 20 for the tracking dataset
 total_data = len(all_data)
 large_texts_end = int(0.8 * total_data)
 tracking_texts_end = int(0.9 * total_data)
@@ -67,18 +77,20 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print("starting training")
 
 # Number of epochs
-num_epochs = 14
+num_epochs = 20
 
-wandb.init(project="pythia-sensitive-neurons-with-dropout-medical", config={
+# Initialize Weights & Biases
+wandb.init(project=f"pythia-send-{args.dataset_name}-k-ablation", config={
     "model_name": MODEL_NAME,
     "epochs": num_epochs,
     "batch_size": 1,
     "learning_rate": 1e-4,
-    "deterministic_dropout_rate": 30,
+    "deterministic_dropout_rate": args.k * 100,
     "dataset_size": len(large_dataset) + len(tracking_dataset),
     "device": device.type,
-    "eigenscore_type": "regular"
-},)
+    "eigenscore_type": "EES",
+    "epoch_threshold": epoch_threshold  # Log epoch threshold
+})
 wandb.watch(model, log="all")
 
 def pad_embeddings(embeddings, target_dim=2048):
@@ -120,7 +132,7 @@ def top_k_percent_sensitive(net_change: np.ndarray, k: float):
     top_changes = {index: net_change[index] for index in top_indices}
     return top_changes
 
-def get_sensitive_neurons(embeddings_list, k=0.3):
+def get_sensitive_neurons(embeddings_list, k=args.k):
     """
     Identify sensitive neurons based on the average embeddings across epochs.
 
@@ -146,7 +158,6 @@ def get_sensitive_neurons(embeddings_list, k=0.3):
     
     return top_sensitive_neurons
 
-
 def drop_sensitive_neurons(model, sensitive_neurons):
     with torch.no_grad():
         for neuron in sensitive_neurons:
@@ -154,7 +165,6 @@ def drop_sensitive_neurons(model, sensitive_neurons):
             model.gpt_neox.layers[-2].mlp.dense_h_to_4h.bias[neuron] = 0
             model.gpt_neox.layers[-2].mlp.dense_4h_to_h.weight[:, neuron] = 0
             model.gpt_neox.layers[-2].mlp.dense_4h_to_h.bias[neuron] = 0
-
 
 def compute_eigenscore(embedding_matrix, alpha=0.001):
     """
@@ -252,16 +262,16 @@ for epoch in range(num_epochs):
     running_loss = 0.0
     
     # Apply previously computed sensitive neurons for dropout
-    if current_sensitive_neurons is not None and dropout_applied_epochs < 3:
+    if current_sensitive_neurons is not None and dropout_applied_epochs < epoch_threshold:
         drop_sensitive_neurons(model, current_sensitive_neurons)
         dropout_applied_epochs += 1
         wandb.log({
             "epoch": epoch + 1,
             "num_sensitive_neurons": len(current_sensitive_neurons),
-            "dropout_epochs_remaining": 3 - dropout_applied_epochs
+            "dropout_epochs_remaining": epoch_threshold - dropout_applied_epochs
         })
     else:
-        # Reset if 3 epochs have passed with the same dropout
+        # Reset if epoch_threshold epochs have passed with the same dropout
         current_sensitive_neurons = None
         dropout_applied_epochs = 0
 
@@ -284,7 +294,7 @@ for epoch in range(num_epochs):
         })
 
     epoch_loss = running_loss / len(large_dataloader)
-    print(f'Epoch [{epoch + 1}/{num_epochs}], Training Loss: {running_loss / len(large_dataloader)}')
+    print(f'Epoch [{epoch + 1}/{num_epochs}], Training Loss: {epoch_loss}')
     wandb.log({
         "epoch": epoch + 1,
         "training_loss": epoch_loss
@@ -298,28 +308,28 @@ for epoch in range(num_epochs):
             input_ids, attention_mask, labels = input_ids.to(device), attention_mask.to(device), labels.to(device)
             outputs = model(input_ids, attention_mask=attention_mask, output_hidden_states=True)
             hidden_states = outputs.hidden_states
-            embeddings = pad_embeddings(hidden_states[-2][:,-2,:])
-            epoch_embeddings.append(embeddings.cpu())
+            embeddings = pad_embeddings(hidden_states[-2][:,-2,:].cpu().numpy())
+            epoch_embeddings.append(embeddings)
     
     embeddings_list.append(epoch_embeddings)
 
     if len(embeddings_list) > 3:
         embeddings_list.pop(0)
     
-    # Every 3 epochs, compute new sensitive neurons and reset the dropout period
-    if (epoch + 1) % 3 == 0:
-        current_sensitive_neurons = get_sensitive_neurons(embeddings_list[-3:])
+    # Every 'epoch_threshold' epochs, compute new sensitive neurons and reset dropout period
+    if (epoch + 1) % epoch_threshold == 0:
+        current_sensitive_neurons = get_sensitive_neurons(embeddings_list[-epoch_threshold:])
         dropout_applied_epochs = 0  # Reset the dropout period to start at the next epoch
         wandb.log({
             "epoch": epoch + 1,
             "num_sensitive_neurons": len(current_sensitive_neurons)
         })
         
+    # Compute eigenscore
     embeddings = get_embeddings(model, tokenizer=tokenizer, test_texts=test_texts)
     average_eigenscore = compute_efficient_eigenscore(embeddings)
 
     wandb.log({"average_eigenscore": average_eigenscore})
-
 
 wandb.finish()
 print("Training complete!")
