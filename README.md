@@ -1,4 +1,4 @@
-# pythia-hallucination
+# SEND
 Set of experiments to evaluate hallucination on the Pythia suite on multiple checkpoints of one model size.
 
 ## MIND pipeline for the activation extraction 
