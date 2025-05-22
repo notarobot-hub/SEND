@@ -1,4 +1,4 @@
-# SEND
+# SEND @ ACL 2025 [Openreview Link](https://openreview.net/forum?id=GHtLZZ3yM4&referrer=%5BAuthor%20Console%5D(%2Fgroup%3Fid%3Daclweb.org%2FACL%2F2025%2FConference%2FAuthors%23your-submissions))
 Set of experiments to evaluate hallucination on the Pythia suite on multiple checkpoints of one model size.
 
 ## MIND pipeline for the activation extraction 
@@ -28,3 +28,14 @@ To install the required packages, create a python3.10 environment (3.10.11 prefe
 
 
 For most experiments, if done with cloud resources, 2 A100l or V100 GPUs will be optimal and not much memory is needed.
+
+```bibtex
+@inproceedings{
+anonymous2025hallucination,
+title={Hallucination Detox: Sensitivity Dropout (SenD) for Large Language Model Training},
+author={Anonymous},
+booktitle={The 63rd Annual Meeting of the Association for Computational Linguistics},
+year={2025},
+url={https://openreview.net/forum?id=GHtLZZ3yM4}
+}
+```
