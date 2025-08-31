@@ -1,0 +1,23 @@
+# Core dependencies for extended SEND implementation
+torch>=1.13.0
+transformers>=4.42.0
+datasets>=2.20.0
+numpy>=1.25.0
+tqdm>=4.66.0
+pandas>=2.0.0
+
+# Optional dependencies
+wandb>=0.17.0  # For experiment tracking
+accelerate>=0.31.0  # For model loading optimization
+
+# For efficient eigenscore computation (from existing codebase)
+scikit-learn>=1.3.0
+scipy>=1.13.0
+
+# Additional utilities
+pathlib
+argparse
+json
+os
+subprocess
+time
